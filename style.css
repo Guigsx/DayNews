@@ -42,3 +42,8 @@ section {
 .items img {
     width: 2.5em;
 }
+
+.description {
+    font-size: 12px;
+    color: gray;
+}
