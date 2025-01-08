@@ -44,9 +44,9 @@ async function buscarCotacoes() {
 
         const formatarInfo = (moeda) => {
             // Verifica se a moeda contém "USD" e aplica a multiplicação pela cotação do dólar
-            let valor = data[moeda].bid;
+            let valor = data[moeda].bid
             if (moeda !== 'USDBRL' && moeda.includes('USD')) {
-                valor = valor * cotacaoDolar;
+                valor = valor * cotacaoDolar
             }
 
             return `
@@ -55,10 +55,9 @@ async function buscarCotacoes() {
                     ${data[moeda].varBid > 0 ? `+${data[moeda].varBid}` : data[moeda].varBid}
                 </p>
                 <p class="description">${formatarHora(data[moeda].timestamp)}</p>
-            `;
+            `
         }
 
-        // Chamadas para atualizar os elementos HTML
         infosDolar.innerHTML = formatarInfo('USDBRL')
         infosEuro.innerHTML = formatarInfo('EURUSD')
         infosLibra.innerHTML = formatarInfo('GBPUSD')
@@ -71,7 +70,7 @@ async function buscarCotacoes() {
 
         // Cálculo do preço do ouro em BRL
         const oncaParaGramas = 31.1035
-        const precoOuroDolares = data['XAUUSD'].low
+        const precoOuroDolares = data['XAUUSD'].bid
         const precoOuroGramas = precoOuroDolares / oncaParaGramas
         const precoOuroBRL = precoOuroGramas * cotacaoDolar
 
@@ -81,11 +80,35 @@ async function buscarCotacoes() {
                 ${data['XAUUSD'].varBid > 0 ? `+${data['XAUUSD'].varBid}` : data['XAUUSD'].varBid}
             </p>
             <p class="description">${formatarHora(data['XAUUSD'].timestamp)}</p>
-        `;
+        `
 
     } catch (error) {
-        console.error("Erro:", error);
+        console.error("Erro:", error)
     }
 }
 
 buscarCotacoes()
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const container = document.querySelector('.container')
+    const box = container.querySelector('.box')
+
+        const response = await fetch('https://weather-api-ldjg.onrender.com/clima/juazeiro/ba')
+        const data = await response.json()
+
+        if (data && data.data && data.data.length > 0) {
+            const weatherInfo = data.data[0].current
+            const location = data.data[0].location
+
+            // Atualizar o HTML com as informações do clima
+            box.innerHTML = `
+                <div class="items">
+                    <img src="/assets/chuva.svg" alt="${weatherInfo.skytext}">
+                    <h3>${location.name}</h3>
+                    <p>Temperatura: ${weatherInfo.temperature}°C</p>
+                    <p>Clima: ${weatherInfo.skytext}</p>
+                </div>
+            `
+        }
+})
