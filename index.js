@@ -88,27 +88,3 @@ async function buscarCotacoes() {
 }
 
 buscarCotacoes()
-
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const container = document.querySelector('.container')
-    const box = container.querySelector('.box')
-
-        const response = await fetch('https://weather-api-ldjg.onrender.com/clima/juazeiro/ba')
-        const data = await response.json()
-
-        if (data && data.data && data.data.length > 0) {
-            const weatherInfo = data.data[0].current
-            const location = data.data[0].location
-
-            // Atualizar o HTML com as informações do clima
-            box.innerHTML = `
-                <div class="items">
-                    <img src="/assets/chuva.svg" alt="${weatherInfo.skytext}">
-                    <h3>${location.name}</h3>
-                    <p>Temperatura: ${weatherInfo.temperature}°C</p>
-                    <p>Clima: ${weatherInfo.skytext}</p>
-                </div>
-            `
-        }
-})
